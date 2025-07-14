@@ -331,6 +331,19 @@
             box-shadow: 0 6px 20px rgba(231,76,60,0.4);
         }
 
+        .btn-info {
+            background: var(--info-color, #17a2b8);
+            border-color: var(--info-color, #17a2b8);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+            border-color: #117a8b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52,152,219,0.4);
+        }
+
         /* === STATISTICHE === */
         .stats {
             display: grid;
@@ -1372,6 +1385,7 @@
         let isExtracting = false;
         let isAdminMode = false;
         let showTeamView = true; // Toggle per visualizzazione classifica
+        let currentExtractedSong = null; // Canzone estratta ma non ancora salvata
 
         // === SQUADRE PREDEFINITE ===
         const DEFAULT_TEAMS = [
@@ -1886,8 +1900,8 @@
                         const randomIndex = Math.floor(Math.random() * availableSongs.length);
                         const selectedSong = availableSongs[randomIndex];
                         
-                        // Crea oggetto canzone estratta
-                        const extractedSongObj = {
+                        // Salva la canzone estratta temporaneamente (NON in extractedSongs)
+                        currentExtractedSong = {
                             song: selectedSong,
                             singer: '',
                             score: '',
@@ -1895,21 +1909,14 @@
                             timestamp: new Date().toISOString()
                         };
                         
-                        extractedSongs.push(extractedSongObj);
-                        saveExtractions();
-                        
                         displayExtractedSong(selectedSong);
                         createConfetti();
-                        updateStats();
-                        updateSongsList();
-                        updateSongsTables();
-                        updateLeaderboard();
                         
                         showToast('Canzone estratta! 🎤', 'success');
                         
                         // Mostra il form per inserire cantante e punteggio dopo un breve delay
                         setTimeout(() => {
-                            showSingerScoreForm(extractedSongs.length - 1);
+                            showSingerScoreForm(-1); // -1 indica che è una nuova estrazione
                         }, 2000);
                         
                         isExtracting = false;
@@ -2178,9 +2185,14 @@
                             <div class="participant-name">${participant.name}</div>
                             <div class="participant-team">Squadra: ${participant.team}</div>
                         </div>
-                        <button class="btn btn-small btn-danger" onclick="removeParticipant(${globalIndex})">
-                            🗑️ Rimuovi
-                        </button>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn btn-small btn-info" onclick="editParticipantTeam(${globalIndex})" title="Modifica squadra">
+                                ✏️ Modifica
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="removeParticipant(${globalIndex})">
+                                🗑️ Rimuovi
+                            </button>
+                        </div>
                     `;
                     
                     list.appendChild(item);
@@ -2359,22 +2371,45 @@
 
         // === GESTIONE CANTANTE E PUNTEGGIO ===
         function showSingerScoreForm(extractedIndex) {
-            const extractedSong = extractedSongs[extractedIndex];
-            if (!extractedSong) return;
+            let extractedSong;
             
-            // Crea opzioni per il select dei partecipanti
+            // Se extractedIndex è -1, usa la canzone estratta temporanea
+            if (extractedIndex === -1) {
+                extractedSong = currentExtractedSong;
+            } else {
+                extractedSong = extractedSongs[extractedIndex];
+            }
+            
+            if (!extractedSong) {
+                showToast('Errore: nessuna canzone da modificare!', 'error');
+                return;
+            }
+            
+            // Crea le opzioni per il select dei partecipanti
             let participantOptions = '<option value="">Seleziona partecipante...</option>';
             participants.forEach(participant => {
                 const selected = extractedSong.singer === participant.name ? 'selected' : '';
-                participantOptions += `<option value="${participant.name}" ${selected}>${participant.name} (${participant.team})</option>`;
+                participantOptions += `<option value="${participant.name}" data-team="${participant.team}" ${selected}>${participant.name} (${participant.team})</option>`;
             });
+            
+            // Genera il link YouTube per la ricerca karaoke
+            const songTitle = encodeURIComponent(extractedSong.song + ' karaoke');
+            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${songTitle}`;
             
             const modal = document.createElement('div');
             modal.className = 'admin-overlay visible';
             modal.innerHTML = `
                 <div class="admin-modal" style="min-width: 400px;">
                     <h3 style="color: var(--accent-color); margin-bottom: 20px;">🎤 Dettagli Esibizione</h3>
-                    <p style="font-size: 1.1rem; margin-bottom: 20px; font-weight: bold;">${extractedSong.song}</p>
+                    <p style="font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">${extractedSong.song}</p>
+                    
+                    <!-- Link YouTube Karaoke -->
+                    <div style="margin-bottom: 20px; text-align: center;">
+                        <a href="${youtubeSearchUrl}" target="_blank" class="btn btn-accent" 
+                           style="background-color: #FF0000; border-color: #FF0000; color: white; text-decoration: none; display: inline-block; padding: 8px 16px; border-radius: 5px; font-size: 0.9rem;">
+                            🎵 Cerca su YouTube Karaoke
+                        </a>
+                    </div>
                     
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nome Cantante:</label>
@@ -2409,11 +2444,18 @@
                         <button class="btn btn-primary" onclick="saveSingerScore(${extractedIndex})">
                             💾 Salva
                         </button>
+                        ${extractedIndex !== -1 ? `
                         <button class="btn btn-warning" onclick="skipExtractedSong(${extractedIndex})" 
                                 style="background-color: #f39c12; border-color: #e67e22;">
                             ⏭️ Salta
                         </button>
-                        <button class="btn btn-secondary" onclick="closeSingerScoreForm()">
+                        ` : `
+                        <button class="btn btn-warning" onclick="cancelExtraction()" 
+                                style="background-color: #f39c12; border-color: #e67e22;">
+                            ⏭️ Salta
+                        </button>
+                        `}
+                        <button class="btn btn-secondary" onclick="${extractedIndex === -1 ? 'cancelExtraction()' : 'closeSingerScoreForm()'}">
                             ❌ Chiudi
                         </button>
                     </div>
@@ -2456,17 +2498,52 @@
                 return;
             }
             
-            // Aggiorna i dati
-            if (singerName) {
-                extractedSongs[extractedIndex].singer = singerName;
-            }
-            if (!isNaN(score) && score >= 1 && score <= 10) {
-                extractedSongs[extractedIndex].score = score;
+            if (extractedIndex === -1) {
+                // Nuova estrazione - salva currentExtractedSong in extractedSongs
+                if (!currentExtractedSong) {
+                    showToast('Errore: nessuna canzone estratta da salvare!', 'error');
+                    return;
+                }
+                
+                // Aggiorna i dati della canzone estratta
+                if (singerName) {
+                    currentExtractedSong.singer = singerName;
+                    // Trova la squadra del partecipante
+                    const participant = participants.find(p => p.name === singerName);
+                    currentExtractedSong.team = participant ? participant.team : '';
+                }
+                if (!isNaN(score) && score >= 1 && score <= 10) {
+                    currentExtractedSong.score = score;
+                }
+                
+                // Aggiungi a extractedSongs
+                extractedSongs.push(currentExtractedSong);
+                currentExtractedSong = null; // Reset
+                
+                // Aggiorna tutto
+                saveExtractions();
+                updateStats();
+                updateSongsList();
+                updateSongsTables();
+                updateLeaderboard();
+                
+            } else {
+                // Modifica di estrazione esistente
+                if (singerName) {
+                    extractedSongs[extractedIndex].singer = singerName;
+                    // Trova la squadra del partecipante
+                    const participant = participants.find(p => p.name === singerName);
+                    extractedSongs[extractedIndex].team = participant ? participant.team : '';
+                }
+                if (!isNaN(score) && score >= 1 && score <= 10) {
+                    extractedSongs[extractedIndex].score = score;
+                }
+                
+                saveExtractions();
+                updateSongsTables();
+                updateLeaderboard();
             }
             
-            saveExtractions();
-            updateSongsTables();
-            updateLeaderboard();
             closeSingerScoreForm();
             
             if (singerName || !isNaN(score)) {
@@ -2479,6 +2556,32 @@
             if (modal) {
                 modal.remove();
             }
+            
+            // Se c'è una canzone estratta non salvata, chiedi conferma
+            if (currentExtractedSong) {
+                if (confirm(`Hai una canzone estratta non salvata: "${currentExtractedSong.song}". Vuoi scartarla? (Tornerà disponibile per future estrazioni)`)) {
+                    currentExtractedSong = null;
+                    const songDisplay = document.getElementById('songDisplay');
+                    songDisplay.innerHTML = 'Canzone scartata! Premi "Estrai Canzone" per continuare!';
+                    document.getElementById('participantInfo').innerHTML = '';
+                    showToast('Canzone scartata! 🗑️', 'warning');
+                }
+            }
+        }
+        
+        function cancelExtraction() {
+            if (confirm('Sei sicuro di voler annullare questa estrazione? La canzone tornerà disponibile.')) {
+                // Reset della canzone estratta temporanea
+                currentExtractedSong = null;
+                
+                // Reset del display
+                const songDisplay = document.getElementById('songDisplay');
+                songDisplay.innerHTML = 'Premi "Estrai Canzone" per continuare!';
+                document.getElementById('participantInfo').innerHTML = '';
+                
+                closeSingerScoreForm();
+                showToast('Estrazione annullata! La canzone è di nuovo disponibile 🔄', 'success');
+            }
         }
         
         function editExtractedSong(extractedIndex) {
@@ -2487,6 +2590,13 @@
         
         // Nuova funzione per selezionare un cantante casuale
         function selectRandomSinger(extractedIndex) {
+            // Se extractedIndex è -1, usa currentExtractedSong
+            const targetSong = extractedIndex === -1 ? currentExtractedSong : extractedSongs[extractedIndex];
+            if (!targetSong) {
+                showToast('Errore: nessuna canzone da assegnare!', 'error');
+                return;
+            }
+            // Rimuovi la parte duplicata e continua con il codice esistente
             // Conta quante volte ha cantato ogni partecipante
             const singerCounts = {};
             participants.forEach(participant => {
@@ -2562,6 +2672,31 @@
         
         // Nuova funzione per saltare la canzone estratta
         function skipExtractedSong(extractedIndex) {
+            if (extractedIndex === -1) {
+                // Nuova estrazione - salta currentExtractedSong
+                if (!currentExtractedSong) {
+                    showToast('Errore: nessuna canzone da saltare!', 'error');
+                    return;
+                }
+                
+                if (confirm(`Sei sicuro di voler saltare la canzone "${currentExtractedSong.song}"? Tornerà disponibile per future estrazioni.`)) {
+                    // Reset currentExtractedSong
+                    currentExtractedSong = null;
+                    
+                    // Chiudi il popup
+                    closeSingerScoreForm();
+                    
+                    // Aggiorna il display dell'estrazione
+                    const songDisplay = document.getElementById('songDisplay');
+                    songDisplay.innerHTML = 'Canzone saltata! Premi "Estrai Canzone" per continuare!';
+                    document.getElementById('participantInfo').innerHTML = '';
+                    
+                    showToast('Canzone saltata! Ora è di nuovo disponibile 🔄', 'success');
+                }
+                return;
+            }
+            
+            // Gestione per canzoni già estratte
             const skippedSong = extractedSongs[extractedIndex];
             
             // Trova il partecipante che ha estratto la canzone
@@ -3008,6 +3143,100 @@
             
             reader.readAsText(file);
             event.target.value = ''; // Reset input
+        }
+
+        // === MODIFICA SQUADRA PARTECIPANTE ===
+        function editParticipantTeam(participantIndex) {
+            const participant = participants[participantIndex];
+            if (!participant) {
+                showToast('Partecipante non trovato!', 'error');
+                return;
+            }
+            
+            // Crea le opzioni per il select delle squadre
+            let teamOptions = '<option value="">Nessuna squadra</option>';
+            teams.forEach(team => {
+                const selected = participant.team === team ? 'selected' : '';
+                teamOptions += `<option value="${team}" ${selected}>${team}</option>`;
+            });
+            
+            const modal = document.createElement('div');
+            modal.className = 'admin-overlay visible';
+            modal.innerHTML = `
+                <div class="admin-modal" style="min-width: 400px;">
+                    <h3 style="color: var(--accent-color); margin-bottom: 20px;">✏️ Modifica Squadra</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">Partecipante: ${participant.name}</p>
+                    
+                    <p style="margin-bottom: 15px; opacity: 0.8;">Squadra attuale: ${participant.team || 'Nessuna'}</p>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nuova Squadra:</label>
+                        <select id="newTeamSelect" class="admin-input custom-select" style="width: 100%; max-width: none;">
+                            ${teamOptions}
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="saveParticipantTeam(${participantIndex})">
+                            💾 Salva
+                        </button>
+                        <button class="btn btn-secondary" onclick="closeEditParticipantModal()">
+                            ❌ Annulla
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.getElementById('newTeamSelect').focus();
+            
+            // Gestione Enter per salvare
+            modal.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    saveParticipantTeam(participantIndex);
+                }
+            });
+        }
+        
+        function saveParticipantTeam(participantIndex) {
+            const newTeam = document.getElementById('newTeamSelect').value;
+            const participant = participants[participantIndex];
+            const oldTeam = participant.team;
+            
+            // Aggiorna la squadra del partecipante
+            participant.team = newTeam;
+            
+            // Aggiorna anche le estrazioni esistenti di questo partecipante
+            extractedSongs.forEach(extraction => {
+                if (extraction.singer === participant.name) {
+                    extraction.team = newTeam;
+                }
+            });
+            
+            // Salva i dati
+            saveParticipants();
+            saveExtractions();
+            
+            // Aggiorna le visualizzazioni
+            updateParticipantsList();
+            updateExtractedSongsTable();
+            updateLeaderboard();
+            
+            // Chiudi la modale
+            closeEditParticipantModal();
+            
+            // Mostra messaggio di successo
+            const teamMessage = newTeam ? `squadra "${newTeam}"` : 'nessuna squadra';
+            const oldTeamMessage = oldTeam ? `"${oldTeam}"` : 'nessuna squadra';
+            showToast(`Squadra di ${participant.name} cambiata da ${oldTeamMessage} a ${teamMessage}! ✏️`, 'success');
+        }
+        
+        // Funzione per chiudere la modale di modifica
+        function closeEditParticipantModal() {
+            const modal = document.querySelector('.admin-overlay.visible');
+            if (modal) {
+                modal.remove();
+            }
         }
 
         // === SHORTCUTS INFO ===
