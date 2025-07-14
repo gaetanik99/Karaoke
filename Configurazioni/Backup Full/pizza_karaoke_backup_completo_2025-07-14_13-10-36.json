@@ -1,0 +1,139 @@
+{
+  "backupInfo": {
+    "version": "2.0",
+    "exportDate": "2025-07-14T11:10:36.868Z",
+    "description": "Backup completo Pizza Karaoke - Include tutto: canzoni, partecipanti, squadre, estrazioni e punteggi"
+  },
+  "songs": [
+    "Volare - Domenico Modugno",
+    "Azzurro - Adriano Celentano",
+    "Nel blu dipinto di blu - Domenico Modugno",
+    "Caruso - Lucio Dalla",
+    "Laura non c'è - Nek",
+    "Bella ciao - Canto popolare",
+    "Sarà perché ti amo - Ricchi e Poveri",
+    "Felicità - Al Bano e Romina Power",
+    "Tanti auguri a te - Tradizionale",
+    "Amico - Lucio Battisti",
+    "Imagine - John Lennon",
+    "Bohemian Rhapsody - Queen",
+    "Sweet Child O' Mine - Guns N' Roses",
+    "Hotel California - Eagles",
+    "Yesterday - The Beatles",
+    "Hallelujah - Leonard Cohen",
+    "Don't Stop Believin' - Journey",
+    "Livin' on a Prayer - Bon Jovi",
+    "Sweet Caroline - Neil Diamond",
+    "My Way - Frank Sinatra",
+    "Despacito - Luis Fonsi",
+    "Shape of You - Ed Sheeran",
+    "Uptown Funk - Mark Ronson ft. Bruno Mars",
+    "Can't Stop the Feeling - Justin Timberlake",
+    "Happy - Pharrell Williams",
+    "Shake It Off - Taylor Swift",
+    "Someone Like You - Adele",
+    "Rolling in the Deep - Adele",
+    "Counting Stars - OneRepublic",
+    "Radioactive - Imagine Dragons",
+    "Macarena - Los Del Rio",
+    "YMCA - Village People",
+    "I Will Survive - Gloria Gaynor",
+    "Dancing Queen - ABBA",
+    "Mamma Mia - ABBA",
+    "Don't Stop Me Now - Queen",
+    "We Are the Champions - Queen",
+    "Eye of the Tiger - Survivor",
+    "Footloose - Kenny Loggins",
+    "Girls Just Want to Have Fun - Cyndi Lauper"
+  ],
+  "teams": [
+    "Rossi",
+    "Bianchi"
+  ],
+  "participants": [
+    {
+      "name": "Gaetano Grande",
+      "team": "Bianchi"
+    },
+    {
+      "name": "Mario Pisacane",
+      "team": "Rossi"
+    },
+    {
+      "name": "Provolone",
+      "team": "Rossi"
+    }
+  ],
+  "extractedSongs": [
+    {
+      "song": "Imagine - John Lennon",
+      "singer": "Mario Pisacane",
+      "score": 5,
+      "extractionOrder": 1,
+      "timestamp": "2025-07-14T11:01:17.516Z"
+    },
+    {
+      "song": "Dancing Queen - ABBA",
+      "singer": "Gaetano Grande",
+      "score": 9,
+      "extractionOrder": 2,
+      "timestamp": "2025-07-14T11:01:48.208Z"
+    },
+    {
+      "song": "Uptown Funk - Mark Ronson ft. Bruno Mars",
+      "singer": "Mario Pisacane",
+      "score": 5,
+      "extractionOrder": 3,
+      "timestamp": "2025-07-14T11:02:10.696Z"
+    },
+    {
+      "song": "Footloose - Kenny Loggins",
+      "singer": "Gaetano Grande",
+      "score": 9,
+      "extractionOrder": 4,
+      "timestamp": "2025-07-14T11:02:33.563Z"
+    },
+    {
+      "song": "Macarena - Los Del Rio",
+      "singer": "Gaetano Grande",
+      "score": 5,
+      "extractionOrder": 5,
+      "timestamp": "2025-07-14T11:02:57.699Z"
+    },
+    {
+      "song": "Girls Just Want to Have Fun - Cyndi Lauper",
+      "singer": "Mario Pisacane",
+      "score": 9,
+      "extractionOrder": 6,
+      "timestamp": "2025-07-14T11:03:15.447Z"
+    },
+    {
+      "song": "We Are the Champions - Queen",
+      "singer": "Provolone",
+      "score": 8,
+      "extractionOrder": 7,
+      "timestamp": "2025-07-14T11:03:48.756Z"
+    },
+    {
+      "song": "Shape of You - Ed Sheeran",
+      "singer": "Provolone",
+      "score": 8,
+      "extractionOrder": 8,
+      "timestamp": "2025-07-14T11:04:12.425Z"
+    },
+    {
+      "song": "Can't Stop the Feeling - Justin Timberlake",
+      "singer": "Provolone",
+      "score": "7",
+      "extractionOrder": 9,
+      "timestamp": "2025-07-14T11:04:33.860Z"
+    }
+  ],
+  "stats": {
+    "totalSongs": 40,
+    "totalTeams": 2,
+    "totalParticipants": 3,
+    "totalExtractions": 9,
+    "extractionsWithScores": 9
+  }
+}

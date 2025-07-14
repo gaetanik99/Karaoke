@@ -1,0 +1,26 @@
+{
+  "participants": [
+    {
+      "name": "Federico",
+      "team": "Rossi"
+    },
+    {
+      "name": "Gaetano Grande",
+      "team": "Bianchi"
+    },
+    {
+      "name": "Gaetano Piccolo",
+      "team": "Bianchi"
+    },
+    {
+      "name": "Angelo Catapano",
+      "team": "Rossi"
+    },
+    {
+      "name": "Mario Pisacane",
+      "team": "Rossi"
+    }
+  ],
+  "exportDate": "2025-07-14T10:42:24.447Z",
+  "version": "1.0"
+}
