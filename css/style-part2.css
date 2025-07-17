@@ -1,0 +1,445 @@
+
+
+/* === GESTIONE PARTECIPANTI === */
+.participants-management {
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: var(--box-shadow);
+}
+
+.participants-management.visible {
+    display: block;
+    animation: slideDown 0.5s ease;
+}
+
+.participants-section {
+    margin-bottom: 30px;
+}
+
+.participants-section h3 {
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.participant-input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.participant-input {
+    flex: 1;
+    padding: 15px;
+    font-size: 1.1rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    min-width: 200px;
+}
+
+.participant-select {
+    flex: 1;
+    padding: 15px;
+    font-size: 1.1rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    min-width: 150px;
+}
+
+.participant-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.participant-input:focus,
+.participant-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(255, 230, 109, 0.3);
+}
+
+.participant-select option {
+    background: var(--primary-color);
+    color: var(--text-light);
+}
+
+.participant-management-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.participants-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+}
+
+.participant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    margin: 8px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.participant-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.participant-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.participant-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-light);
+}
+
+.participant-team {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    opacity: 0.8;
+}
+
+.team-badge {
+    background: var(--accent-color);
+    color: var(--primary-color);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Select personalizzato */
+.custom-select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--secondary-color);
+    border-radius: 4px;
+    padding: 5px 8px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 150px;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.custom-select option {
+    background: var(--primary-color);
+    color: var(--text-light);
+}
+
+/* === MENU HAMBURGER === */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.hamburger-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hamburger-icon:hover {
+    transform: scale(1.1);
+    background: #ff5252;
+}
+
+.hamburger-icon span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    margin: 2px 0;
+    transition: var(--transition);
+    border-radius: 2px;
+}
+
+.hamburger-icon.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-icon.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-icon.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* === MENU LATERALE === */
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 350px;
+    height: 100vh;
+    background: rgba(44, 62, 80, 0.95);
+    backdrop-filter: blur(10px);
+    transition: right 0.3s ease;
+    z-index: 999;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.side-menu.active {
+    right: 0;
+}
+
+.menu-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-header h3 {
+    color: var(--accent-color);
+    font-size: 1.3rem;
+}
+
+.close-menu {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.close-menu:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-content {
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+}
+
+.menu-section {
+    margin-bottom: 30px;
+}
+
+.menu-section h4 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+    padding-bottom: 5px;
+}
+
+.menu-btn {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.menu-btn.danger {
+    border-color: var(--error-color);
+    color: #ffcdd2;
+}
+
+.menu-btn.danger:hover {
+    background: rgba(231, 76, 60, 0.2);
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* === PULSANTI PRINCIPALI INGRANDITI === */
+.btn-large {
+    padding: 20px 40px;
+    font-size: 1.4rem;
+    min-width: 250px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .side-menu {
+        width: 100vw;
+        right: -100vw;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-large {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+    }
+
+    .header p {
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .song-display {
+        font-size: 1.8rem;
+    }
+
+    .song-input-group {
+        flex-direction: column;
+    }
+
+    .song-input {
+        min-width: auto;
+    }
+}
+
+/* === STILI PER PROIEZIONE === */
+@media (min-width: 1200px) {
+    .header h1 {
+        font-size: 4rem;
+    }
+
+    .song-display {
+        font-size: 3.5rem;
+        min-height: 120px;
+    }
+
+    .btn {
+        font-size: 1.4rem;
+        padding: 20px 40px;
+    }
+}
+
+/* === TOAST NOTIFICATIONS === */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: var(--border-radius);
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    animation: slideInRight 0.3s ease;
+}
+
+.toast.success {
+    background: var(--success-color);
+}
+
+.toast.error {
+    background: var(--error-color);
+}
+
+.toast.warning {
+    background: var(--warning-color);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* === ADMIN PASSWORD === */
+.admin-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.admin-overlay.visible {
+    display: flex;
+}
+
+.admin-modal {
+    background: var(--background-light);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+}
