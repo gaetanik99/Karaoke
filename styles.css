@@ -571,19 +571,195 @@ body {
     color: var(--text-light);
 }
 
+/* === MENU HAMBURGER === */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.hamburger-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hamburger-icon:hover {
+    transform: scale(1.1);
+    background: #ff5252;
+}
+
+.hamburger-icon span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    margin: 2px 0;
+    transition: var(--transition);
+    border-radius: 2px;
+}
+
+.hamburger-icon.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-icon.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-icon.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* === MENU LATERALE === */
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 350px;
+    height: 100vh;
+    background: rgba(44, 62, 80, 0.95);
+    backdrop-filter: blur(10px);
+    transition: right 0.3s ease;
+    z-index: 999;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.side-menu.active {
+    right: 0;
+}
+
+.menu-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-header h3 {
+    color: var(--accent-color);
+    font-size: 1.3rem;
+}
+
+.close-menu {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.close-menu:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-content {
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+}
+
+.menu-section {
+    margin-bottom: 30px;
+}
+
+.menu-section h4 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+    padding-bottom: 5px;
+}
+
+.menu-btn {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.menu-btn.danger {
+    border-color: var(--error-color);
+    color: #ffcdd2;
+}
+
+.menu-btn.danger:hover {
+    background: rgba(231, 76, 60, 0.2);
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* === PULSANTI PRINCIPALI INGRANDITI === */
+.btn-large {
+    padding: 20px 40px;
+    font-size: 1.4rem;
+    min-width: 250px;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
+    .side-menu {
+        width: 100vw;
+        right: -100vw;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-large {
+        width: 100%;
+        max-width: 300px;
+    }
+
     .header h1 {
         font-size: 2.5rem;
     }
 
     .header p {
         font-size: 1.1rem;
-    }
-
-    .controls {
-        flex-direction: column;
-        align-items: center;
     }
 
     .btn {

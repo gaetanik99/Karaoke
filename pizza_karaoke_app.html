@@ -17,36 +17,63 @@
 
     <!-- Contenitore principale -->
     <div class="container">
-        <!-- Controlli principali -->
+        <!-- Menu Hamburger -->
+        <div class="hamburger-menu" id="hamburgerMenu">
+            <div class="hamburger-icon" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- Menu Laterale -->
+        <div class="side-menu" id="sideMenu">
+            <div class="menu-header">
+                <h3>⚙️ Menu Gestione</h3>
+                <button class="close-menu" onclick="toggleMenu()">✕</button>
+            </div>
+            <div class="menu-content">
+                <div class="menu-section">
+                    <h4>🎵 Gestione</h4>
+                    <button class="menu-btn" onclick="toggleSongManagement(); toggleMenu();">
+                        🎵 Gestisci Canzoni
+                    </button>
+                    <button class="menu-btn" onclick="toggleParticipantsManagement(); toggleMenu();">
+                        👥 Gestisci Partecipanti
+                    </button>
+                </div>
+                <div class="menu-section">
+                    <h4>🔄 Reset</h4>
+                    <button class="menu-btn" onclick="resetExtractions(); toggleMenu();">
+                        🔄 Reset Estrazioni
+                    </button>
+                    <button class="menu-btn danger" onclick="resetCompleteApplication(); toggleMenu();">
+                        🗑️ Reset Completo
+                    </button>
+                </div>
+                <div class="menu-section">
+                    <h4>💾 Backup</h4>
+                    <button class="menu-btn" onclick="exportCompleteBackup(); toggleMenu();">
+                        💾 Backup Completo
+                    </button>
+                    <button class="menu-btn" onclick="document.getElementById('importCompleteBackupInput').click(); toggleMenu();">
+                        📂 Ripristina Backup
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay per chiudere il menu -->
+        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+        <!-- Controlli principali semplificati -->
         <div class="controls">
-            <button class="btn btn-primary" onclick="extractSong()" id="extractBtn">
+            <button class="btn btn-primary btn-large" onclick="extractSong()" id="extractBtn">
                 🎲 Estrai Canzone
             </button>
-            <button class="btn btn-secondary management-toggle-btn" onclick="toggleSongManagement()"
-                id="songManagementBtn">
-                🎵 Gestisci Canzoni
-            </button>
-            <button class="btn btn-secondary management-toggle-btn" onclick="toggleParticipantsManagement()"
-                id="participantsManagementBtn">
-                👥 Gestisci Partecipanti
-            </button>
-            <button class="btn btn-accent"
+            <button class="btn btn-accent btn-large"
                 onclick="document.getElementById('leaderboard-section').scrollIntoView({behavior: 'smooth'})">
                 🏆 Vai alla Classifica
-            </button>
-            <button class="btn btn-accent" onclick="resetExtractions()">
-                🔄 Reset Estrazioni
-            </button>
-            <!-- NUOVI PULSANTI BACKUP -->
-            <button class="btn btn-primary" onclick="exportCompleteBackup()" title="Esporta backup completo">
-                💾 Backup Completo
-            </button>
-            <button class="btn btn-primary" onclick="document.getElementById('importCompleteBackupInput').click()"
-                title="Importa backup completo">
-                📂 Ripristina Backup
-            </button>
-            <button class="btn btn-danger" onclick="resetCompleteApplication()" title="Reset completo di tutti i dati">
-                🗑️ Reset Completo
             </button>
         </div>
 

@@ -77,6 +77,24 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeApp();
 });
 
+// === GESTIONE MENU HAMBURGER ===
+function toggleMenu() {
+    const sideMenu = document.getElementById('sideMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const hamburgerIcon = document.querySelector('.hamburger-icon');
+    
+    sideMenu.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
+    hamburgerIcon.classList.toggle('active');
+    
+    // Previeni lo scroll del body quando il menu è aperto
+    if (sideMenu.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+}
+
 function initializeApp() {
     loadSongs();
     loadExtractions();
@@ -144,6 +162,13 @@ function setupEventListeners() {
         if (e.ctrlKey && e.key === 'r') {
             e.preventDefault();
             resetExtractions();
+        }
+        // Chiudi il menu quando si preme ESC
+        if (e.key === 'Escape') {
+            const sideMenu = document.getElementById('sideMenu');
+            if (sideMenu && sideMenu.classList.contains('active')) {
+                toggleMenu();
+            }
         }
     });
 }
